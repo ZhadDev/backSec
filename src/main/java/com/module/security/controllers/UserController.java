@@ -35,4 +35,12 @@ public class UserController {
         return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "allUser")
+    public ResponseEntity<ResponseApiDto> allUser() {
+        responseApiDto.setCodeResponse(HttpStatus.OK.value());
+        responseApiDto.setData(userService.sec_r_user());
+
+        return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
+    }
+
 }
