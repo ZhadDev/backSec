@@ -22,18 +22,30 @@ public class UserServiceImpl implements IUserService {
     UserMapper userMapper;
 
     @Override
-    public UserDto sec_cu_user(UserDto userDto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sec_cu_user'");
-    }
-
-    @Override
     public List<UserDto> sec_r_user() {
         List<UserDto> userDtos = new ArrayList<>();
         List<User> users = (List<User>) userRepository.findAll();
         userDtos = userMapper.modelToDtos(users);
 
         return userDtos;
+    }
+
+    @Override
+    public UserDto sec_cu_user(UserDto userDto) {
+        if (userDto.getId() == 0) { // create
+            User user = new User();
+            user = userMapper.dtoToModel(userDto);
+            user = userRepository.save(user);
+            userDto = userMapper.modelToDto(user);
+        } else {
+
+            User user = userRepository.findById(userDto.getId()).get();
+            user = userMapper.dtoToModel(userDto);
+            user = userRepository.save(user);
+            userDto = userMapper.modelToDto(user);
+        }
+
+        return userDto;
     }
 
     @Override

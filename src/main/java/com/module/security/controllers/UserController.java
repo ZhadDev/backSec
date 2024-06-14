@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
     private ResponseApiDto responseApiDto;
 
+    public UserController() {
+        responseApiDto = new ResponseApiDto();
+        responseApiDto.setCodeName("PENDING");
+    }
+
     @Autowired
     IUserService userService;
 
@@ -30,6 +35,7 @@ public class UserController {
     @PostMapping(path = "saveUser")
     public ResponseEntity<ResponseApiDto> saveUpdateUser(@RequestBody UserDto userDto) {
         responseApiDto.setCodeResponse(HttpStatus.CREATED.value());
+        responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
         responseApiDto.setData(userService.sec_cu_user(userDto));
 
         return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
@@ -38,6 +44,7 @@ public class UserController {
     @GetMapping(path = "allUser")
     public ResponseEntity<ResponseApiDto> allUser() {
         responseApiDto.setCodeResponse(HttpStatus.OK.value());
+        responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
         responseApiDto.setData(userService.sec_r_user());
 
         return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
