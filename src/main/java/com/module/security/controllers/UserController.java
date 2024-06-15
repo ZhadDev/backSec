@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,6 +34,15 @@ public class UserController {
         return "Prueba";
     }
 
+    @GetMapping(path = "allUser")
+    public ResponseEntity<ResponseApiDto> allUser() {
+        responseApiDto.setCodeResponse(HttpStatus.OK.value());
+        responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
+        responseApiDto.setData(userService.sec_r_user());
+
+        return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
+    }
+
     @PostMapping(path = "saveUser")
     public ResponseEntity<ResponseApiDto> saveUpdateUser(@RequestBody UserDto userDto) {
         responseApiDto.setCodeResponse(HttpStatus.CREATED.value());
@@ -41,11 +52,21 @@ public class UserController {
         return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
     }
 
-    @GetMapping(path = "allUser")
-    public ResponseEntity<ResponseApiDto> allUser() {
+    @GetMapping(path = "userId/{id}")
+    public ResponseEntity<ResponseApiDto> userId(@PathVariable("id") Integer id) {
         responseApiDto.setCodeResponse(HttpStatus.OK.value());
         responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
-        responseApiDto.setData(userService.sec_r_user());
+        responseApiDto.setData(userService.sec_filter_user(id));
+
+        return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "deleteUser/{id}")
+    public ResponseEntity<ResponseApiDto> deleteUser(@PathVariable("id") Integer id) {
+        responseApiDto.setCodeResponse(HttpStatus.CREATED.value());
+        responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
+        userService.sec_d_user(id);
+        responseApiDto.setData(null);
 
         return new ResponseEntity<ResponseApiDto>(responseApiDto, HttpStatus.OK);
     }

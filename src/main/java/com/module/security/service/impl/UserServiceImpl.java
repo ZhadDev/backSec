@@ -50,14 +50,16 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void sec_d_user(Integer Id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sec_d_user'");
+        userRepository.deleteById(Id);
     }
 
     @Override
     public UserDto sec_filter_user(Integer Id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sec_filter_user'");
+        UserDto userDto = new UserDto();
+        if (userRepository.findById(Id).isPresent()) {
+            userDto = userMapper.modelToDto(userRepository.findById(Id).get());
+        }
+        return userDto;
     }
 
 }
