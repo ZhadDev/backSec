@@ -54,7 +54,7 @@ public class UserServiceImpl implements IUserService {
         if (userRepository.findById(Id).isPresent()) {
             userRepository.deleteById(Id);
         } else {
-            throw new UserNotFoundException("User is not available");
+            throw new UserNotFoundException("EL usuario con el id " + Id + " no existe");
         }
 
     }

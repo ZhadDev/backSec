@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorMessage {
+    private String codeName;
     private HttpStatus status;
     private String message;
     private Integer codeError;
