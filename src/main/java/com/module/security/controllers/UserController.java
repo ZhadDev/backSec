@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.module.security.dto.ResponseApiDto;
 import com.module.security.dto.UserDto;
+import com.module.security.errors.UserNotFoundException;
 import com.module.security.service.IUserService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +54,8 @@ public class UserController {
     }
 
     @GetMapping(path = "userId/{id}")
-    public ResponseEntity<ResponseApiDto> userId(@PathVariable("id") Integer id) {
+    public ResponseEntity<ResponseApiDto> userId(@PathVariable("id") Integer id)
+            throws UserNotFoundException {
         responseApiDto.setCodeResponse(HttpStatus.OK.value());
         responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
         responseApiDto.setData(userService.sec_filter_user(id));
@@ -62,7 +64,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "deleteUser/{id}")
-    public ResponseEntity<ResponseApiDto> deleteUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<ResponseApiDto> deleteUser(@PathVariable("id") Integer id) throws UserNotFoundException {
         responseApiDto.setCodeResponse(HttpStatus.CREATED.value());
         responseApiDto.setCodeName(HttpStatus.CREATED.series().name());
         userService.sec_d_user(id);

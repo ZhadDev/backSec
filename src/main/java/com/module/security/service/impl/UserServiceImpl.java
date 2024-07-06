@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.module.security.dto.UserDto;
 import com.module.security.dto.mapper.UserMapper;
 import com.module.security.entities.User;
+import com.module.security.errors.UserNotFoundException;
 import com.module.security.repository.UserRepository;
 import com.module.security.service.IUserService;
 
@@ -49,15 +50,22 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void sec_d_user(Integer Id) {
-        userRepository.deleteById(Id);
+    public void sec_d_user(Integer Id) throws UserNotFoundException {
+        if (userRepository.findById(Id).isPresent()) {
+            userRepository.deleteById(Id);
+        } else {
+            throw new UserNotFoundException("User is not available");
+        }
+
     }
 
     @Override
-    public UserDto sec_filter_user(Integer Id) {
+    public UserDto sec_filter_user(Integer Id) throws UserNotFoundException {
         UserDto userDto = new UserDto();
         if (userRepository.findById(Id).isPresent()) {
             userDto = userMapper.modelToDto(userRepository.findById(Id).get());
+        } else {
+            throw new UserNotFoundException("User is not available");
         }
         return userDto;
     }
